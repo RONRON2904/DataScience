@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Nom du job
+#BSUB -J IDRIS_test_ke210218
+
+# Ficher output et error, ici le meme fichier
+#BSUB -e %J.idris.sortie
+#BSUB -o %J.idris.sortie
+# Re©servation exclusive d'un noeud 
+#BSUB -n 4
+# Nombre de tache MPI par noeud
+#BSUB -R "span[ptile=4]"
+# Duree maximum du traval(1 heure)
+#BSUB -W 10:00
+ 
+module load anaconda3 gcc/4.8 cudnn/6.0
+
+export CUDA_VISIBLE_DEVICES="0, 1, 2, 3"
+export PATH=$HOME/openmpi-2.1.2/bin:$PATH
+export LD_LIBRARY_PATH=$HOME/openmpi-2.1.2/lib:$LD_LIBRARY_PATH
+
+#Python 3
+which python
+which mpirun
+python --version 
+python -c "import tensorflow; import horovod.tensorflow as hrv; print(tensorflow.__version__)" 
+python -c "import keras; print(keras.__version__)" 
+time HOROVOD_TIMELINE=./timeline.json mpirun -np 4 -x HOROVOD_TIMELINE -x LD_LIBRARY_PATH -bind-to none -map-by slot -x NCCL_DEBUG=INFO -x LD_LIBRARY_PATH -x PATH --mca orte_tmpdir_base "/tmp" python u-net_multi_gpu.py > unet4gpu1node.log
+
