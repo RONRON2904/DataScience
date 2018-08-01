@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Nom du job
+#BSUB -J alberto.ke210218
+# Ficher output et error, ici le meme fichier
+#BSUB -e %J.sortie
+#BSUB -o %J.sortie
+# Réservation exclusive d'un noeud 
+#BSUB -n 1
+#BSUB -x
+# Nombre de tache MPI par noeud
+#BSUB -R "span[ptile=4]"
+# Durée maximum du traval(1 heure)
+#BSUB -W 01:00
+ 
+export CUDA_VISIBLE_DEVICES="0,1,2,3"
+#Python 3
+export PYTHON="/pwrlocal/pub/anaconda3/5.0.0/bin/python" 
+
+set -x 
+$PYTHON --version 
+$PYTHON -c "import tensorflow; print(tensorflow.__version__)" 
+$PYTHON -c "import keras; print(keras.__version__)" 
+
+$PYTHON unet_multigpu_keras.py > unet_multigpu_keras.log
