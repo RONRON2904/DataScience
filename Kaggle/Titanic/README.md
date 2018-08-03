@@ -3,8 +3,10 @@ Here you can find the code I quickly developped just to try my first Kaggle Comp
 Given a train file, Titanic competition is about predicting who survived and who didn't. 
 
 Train file : 
-      	   Row : A person
-	   Column : survived (yes, not), age, sex, class (1st, 2nd, 3rd), fare, #Siblings+(SpouseHusband) etc..
+      	  
+	  Row : A person
+	  
+	  Column : survived (yes, not), age, sex, class (1st, 2nd, 3rd), fare, #Siblings+(SpouseHusband) etc..
 
 Test File : same as Train File but without the answer (Survived) of course. (Yet , it is quite the same as you can see the names of people and thus check on internet if they survived or not)
 
